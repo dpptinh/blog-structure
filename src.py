@@ -144,10 +144,10 @@ if st.button("Generate"):
       
   [Twitter]({twitter})"""
     except:
-      for page in search( "website" + " of " + project_name, num_results =1):
+      for page in search( "website" + " of " + project_name + " in web3", num_results =1):
         website = page
         break
-      for page in search( "twitter" + " of " + project_name, num_results =1):
+      for page in search( "twitter" + " of " + project_name + " in web3", num_results =1):
           twitter = page
           break
       community = f"""[Website]({website})
