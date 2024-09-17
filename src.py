@@ -1,7 +1,6 @@
 import streamlit as st
 import trafilatura
 import google.generativeai as genai
-from docx import Document
 import io
 import ast
 import trafilatura
@@ -126,19 +125,6 @@ def get_context(links: list) -> str:
     full_context += "\n     </blog-collection>"
     return full_context
 
-# Function to create a DOCX file
-def create_docx(content):
-    doc = Document()
-    for line in content.splitlines():
-        if line.startswith('# '):  # Heading 1
-            doc.add_heading(line[2:], level=1)
-        elif line.startswith('## '):  # Heading 2
-            doc.add_heading(line[3:], level=2)
-        elif line.startswith('### '):  # Heading 3
-            doc.add_heading(line[4:], level=3)
-        else:
-            doc.add_paragraph(line)
-    return doc
 
 # Streamlit UI
 st.title("Crawl và Generate Content")
