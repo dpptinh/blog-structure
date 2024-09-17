@@ -133,11 +133,21 @@ project_name = st.text_area("Nhập tên dự án:")
 if st.button("Generate"):
     links = links_input.splitlines()
     raw_content = get_context(links)
-    
-    for page in search( "website" + " of " + project_name, num =1, start=0, stop=1):
+    try:
+      for page in search( "website" + " of " + project_name, num =1, start=0, stop=1):
+          website = page
+          break
+      for page in search( "twitter" + " of " + project_name, num =1, start=0, stop=1):
+          twitter = page
+          break
+      community = f"""[Website]({website})
+      
+  [Twitter]({twitter})"""
+    except:
+      for page in search( "website" + " of " + project_name, num_results =1):
         website = page
         break
-    for page in search( "twitter" + " of " + project_name, num =1, start=0, stop=1):
+    for page in search( "twitter" + " of " + project_name, num_results =1):
         twitter = page
         break
     community = f"""[Website]({website})
