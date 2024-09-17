@@ -147,10 +147,10 @@ if st.button("Generate"):
       for page in search( "website" + " of " + project_name, num_results =1):
         website = page
         break
-    for page in search( "twitter" + " of " + project_name, num_results =1):
-        twitter = page
-        break
-    community = f"""[Website]({website})
+      for page in search( "twitter" + " of " + project_name, num_results =1):
+          twitter = page
+          break
+      community = f"""[Website]({website})
     
 [Twitter]({twitter})"""
     # Generate content using the model
