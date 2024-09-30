@@ -130,7 +130,9 @@ def get_context(links: list) -> str:
 
 def extract_text_from_pdf(pdf_file) -> str:
     text = ""
-    with fitz.open(pdf_file) as doc:
+    # Đảm bảo rằng pdf_file là một đối tượng BytesIO
+    pdf_file.seek(0)  # Đặt con trỏ về đầu file
+    with fitz.open(stream=pdf_file.read(), filetype="pdf") as doc:
         count = 1
         for page in doc:
             text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
