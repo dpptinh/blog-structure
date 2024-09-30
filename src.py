@@ -45,7 +45,7 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
 3. **Structure and Length:** (Importance: Critical)
    - The first section of the blog must be titled "Tổng quan."
    - The content of "Tổng quan" section and "Kết luận" section should be consice texts while the remaining sections (Mô hình kinh doanh, Đội ngũ dự án, Định hướng phát triển, Đối thủ cạnh tranh, Thực tế đạt được/Tình hình hoạt động, Tokenomic, Mua token ở đâu?) should be long, detailed and comprehensive.
-   - The content of each header and section should include multiple short paragraphs (around 80 words per paragraph).
+   - The content of each header and section should include multiple short paragraphs.
    - The length of the blog content should be comprehensive and detailed, reflecting the content related to the chapter titles in the original blog. However, it should not exceed 8100 tokens/words.
 
 4. **Final Review:** (Importance: High)
