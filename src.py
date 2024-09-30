@@ -20,7 +20,7 @@ ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
 <TASK>
-Rewrite, paraphrase the information from the provided information into a new, detailed blog post in Vietnamese.
+Extract, Rewrite, paraphrase the information from the provided information into a LONG, DETAILED and COMPREHENSIVE blog post in Vietnamese.
 Your professionally rewritten content will enhance SEO while rigorously maintaining the integrity of original data, key phrases, and quoted content.
 </TASK>
 
@@ -46,7 +46,7 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
    - The first section of the blog must be titled "Tổng quan."
    - The content of "Tổng quan" section and "Kết luận" section should be consice texts while the remaining sections (Mô hình kinh doanh, Đội ngũ dự án, Định hướng phát triển, Đối thủ cạnh tranh, Thực tế đạt được/Tình hình hoạt động, Tokenomic, Mua token ở đâu?) should be long, detailed and comprehensive.
    - The content of each header and section should contain multiple paragraphs.
-   - The length of the blog content should be comprehensive and detailed, reflecting the content related to the chapter titles in the original blog. However, it should not exceed 8100 tokens.
+   - The length of the blog content should be comprehensive and detailed, reflecting the content related to the chapter titles in the original blog. However, it should not exceed 8100 tokens/words.
 
 4. **Final Review:** (Importance: High)
    - Double-check the blog outline. If the outline or structure is incorrect, you must regenerate the blog.
@@ -88,10 +88,13 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
 </blog-outline>
 
 <FORMAT>
-  Provide only the detailed blog post in Vietnamese in MARKDOWN format with valid JSON (keys: "title" and "content"). Do not add any other explanations or notes, and do not repeat the title in the content.
+  Provide only the detailed blog post in Vietnamese in MARKDOWN format with valid JSON (keys: "title" and "content"). 
+  Do not add any other explanations or notes, and do not repeat the title in the content.
+  Do not ```json or ```markdown or ``` in the content.
+  Do not any text exclude the title and content in JSON format.
 </FORMAT>
 """
-
+from langchain_openai import AzureChatOpenAI, AzureOpenAI
 import os
 import ast
 import google.generativeai as genai
@@ -113,7 +116,15 @@ model_gemini = genai.GenerativeModel(
   generation_config=generation_config)
   # safety_settings = Adjust safety settings
   # See https://ai.google.dev/gemini-api/docs/safety-settings)
-  
+model_gpt_4o_mini = AzureChatOpenAI(
+          model="gpt-4o-mini",
+          openai_api_version=st.secrets['OPENAI_API_VERSION'],
+          azure_deployment=st.secrets['AZURE_DEPLOYMENT_NAME'],
+          max_tokens=4096,
+          temperature=0.2,
+          api_key=st.secrets['AZURE_OPENAI_API_KEY'],
+          azure_endpoint=st.secrets['AZURE_OPENAI_ENDPOINT']
+      )
 # Function to crawl content from links
 def get_context(links: list) -> str:
     full_context = '      <blog-collection>'
@@ -179,12 +190,12 @@ if st.button("Generate"):
       
   [Twitter]({twitter})"""
       # Generate content using the model
-      blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
-      
+      # blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
+      blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
       # Display the generated content in Markdown
       with st.spinner("Generating content..."):
-        generated_content = blog.candidates[0].content.parts[0].text.strip()
-        a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
+        # a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
+        a = ast.literal_eval(blog.content.strip().strip("\n"))
         final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
         print(final_blog)
         st.markdown(final_blog)
