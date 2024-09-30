@@ -43,7 +43,7 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
 
 3. **Structure and Length:** (Importance: Critical)
    - The first section of the blog must be titled "Tổng quan."
-   - The content of "Tổng quan" section and "Kết luận" section should be consice texts while the remaining sections should be detailed and comprehensive.
+   - The content of "Tổng quan" section and "Kết luận" section should be consice texts while the remaining sections (Mô hình kinh doanh, Đội ngũ dự án, Định hướng phát triển, Đối thủ cạnh tranh, Thực tế đạt được/Tình hình hoạt động, Tokenomic, Mua token ở đâu?) should be long, detailed and comprehensive.
    - The content of each header and section should contain multiple paragraphs.
    - The length of the blog content should be comprehensive and detailed, reflecting the content related to the chapter titles in the original blog. However, it should not exceed 8100 tokens.
 
@@ -129,15 +129,16 @@ def get_context(links: list) -> str:
     return full_context
 
 def extract_text_from_pdf(pdf_file) -> str:
-    text = ""
-    # Đảm bảo rằng pdf_file là một đối tượng BytesIO
-    pdf_file.seek(0)  # Đặt con trỏ về đầu file
-    with fitz.open(stream=pdf_file.read(), filetype="pdf") as doc:
-        count = 1
-        for page in doc:
-            text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
-            count += 1
-    return text
+   text = ""
+   # Đảm bảo rằng pdf_file là một đối tượng BytesIO
+   pdf_file.seek(0)  # Đặt con trỏ về đầu file
+   with fitz.open(stream=pdf_file.read(), filetype="pdf") as doc:
+     count = 1
+     for page in doc:
+         text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
+         count += 1
+   print("PDF CONTENT: \n")
+   return text
 
 # Streamlit UI
 st.title("Crawl và Generate Content")
