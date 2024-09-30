@@ -150,10 +150,10 @@ pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploa
 
 if st.button("Generate"):
     links = links_input.splitlines()
-    raw_content = ""
+    raw_content = "\n   <projection-information>"
     if links:
         blog_content = get_context(links)
-        raw_content += f"\n   <projection-information>\n{blog_content}"
+        raw_content += f"\n{blog_content}"
     if pdf_file:
         pdf_content = extract_text_from_pdf(pdf_file)
         raw_content += f"\n\n{pdf_content}" + "\n   </projection-information>"
