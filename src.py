@@ -15,6 +15,7 @@ from googlesearch import search
 prompt = """<ROLE>You are an expert SEO blog post writer about projects in web3. You can extract, synthesize, and rewrite AI and SEO content in MARKDOWN format while strictly preserving key original elements.</ROLE>
 
 <INPUT>
+PROJECT_NAME: {project_name}
 ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
@@ -178,7 +179,7 @@ if st.button("Generate"):
       
   [Twitter]({twitter})"""
       # Generate content using the model
-      blog = model_gemini.generate_content(prompt.format(content = raw_content))
+      blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
       
       # Display the generated content in Markdown
       with st.spinner("Generating content..."):
