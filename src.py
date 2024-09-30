@@ -20,7 +20,7 @@ ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
 <TASK>
-Extract, Rewrite, paraphrase the information from the provided information into a LONG, DETAILED and COMPREHENSIVE blog post in Vietnamese.
+Summarize, Rewrite, paraphrase the information from the provided information into a LONG, DETAILED and COMPREHENSIVE blog post in Vietnamese.
 Your professionally rewritten content will enhance SEO while rigorously maintaining the integrity of original data, key phrases, and quoted content.
 </TASK>
 
