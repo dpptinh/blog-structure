@@ -20,7 +20,7 @@ ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
 <TASK>
-Summarize, Rewrite, paraphrase the information from the provided information into a LONG, DETAILED and COMPREHENSIVE blog post in Vietnamese.
+Rewrite, paraphrase the information from the provided information into a COMPREHENSIVE blog post in Vietnamese.
 Your professionally rewritten content will enhance SEO while rigorously maintaining the integrity of original data, key phrases, and quoted content.
 </TASK>
 
@@ -104,7 +104,7 @@ genai.configure(api_key=st.secrets['GENAI_API_KEY'])
 # Create the model
 # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
-  "temperature": 0.21,
+  "temperature": 0.1,
   "top_p": 1.0,
   "top_k": 120,
   "max_output_tokens": 8192,
