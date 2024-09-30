@@ -2,3 +2,4 @@ trafilatura
 googlesearch-python
 google-generativeai
 python-dotenv
+PyMuPDF
