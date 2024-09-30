@@ -116,15 +116,15 @@ model_gemini = genai.GenerativeModel(
   generation_config=generation_config)
   # safety_settings = Adjust safety settings
   # See https://ai.google.dev/gemini-api/docs/safety-settings)
-model_gpt_4o_mini = AzureChatOpenAI(
-          model="gpt-4o-mini",
-          openai_api_version=st.secrets['OPENAI_API_VERSION'],
-          azure_deployment=st.secrets['AZURE_DEPLOYMENT_NAME'],
-          max_tokens=4096,
-          temperature=0.2,
-          api_key=st.secrets['AZURE_OPENAI_API_KEY'],
-          azure_endpoint=st.secrets['AZURE_OPENAI_ENDPOINT']
-      )
+# model_gpt_4o_mini = AzureChatOpenAI(
+#           model="gpt-4o-mini",
+#           openai_api_version="2023-03-15-preview,
+#           azure_deployment=st.secrets['AZURE_DEPLOYMENT_NAME'],
+#           max_tokens=4096,
+#           temperature=0.2,
+#           api_key=st.secrets['AZURE_OPENAI_API_KEY'],
+#           azure_endpoint=st.secrets['AZURE_OPENAI_ENDPOINT']
+#       )
 # Function to crawl content from links
 def get_context(links: list) -> str:
     full_context = '      <blog-collection>'
@@ -190,12 +190,12 @@ if st.button("Generate"):
       
   [Twitter]({twitter})"""
       # Generate content using the model
-      # blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
-      blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
+      blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
+      # blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
       # Display the generated content in Markdown
       with st.spinner("Generating content..."):
-        # a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
-        a = ast.literal_eval(blog.content.strip().strip("\n"))
+        a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
+        # a = ast.literal_eval(blog.content.strip().strip("\n"))
         final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
         print(final_blog)
         st.markdown(final_blog)
