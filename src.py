@@ -118,7 +118,7 @@ model_gemini = genai.GenerativeModel(
   # See https://ai.google.dev/gemini-api/docs/safety-settings)
 model_gpt_4o_mini = AzureChatOpenAI(
           model="gpt-4o-mini",
-          openai_api_version=st.secrets['OPENAI_API_VERSION'],
+          openai_api_version="2023-03-15-preview,
           azure_deployment=st.secrets['AZURE_DEPLOYMENT_NAME'],
           max_tokens=4096,
           temperature=0.2,
