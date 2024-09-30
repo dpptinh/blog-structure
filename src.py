@@ -149,45 +149,51 @@ pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploa
 
 if st.button("Generate"):
     links = links_input.splitlines()
-    raw_content = get_context(links)
+    raw_content = ""
+    if links:
+        blog_content = get_context(links)
+        raw_content += f"\n   <projection-information>\n{blog_content}"
     if pdf_file:
         pdf_content = extract_text_from_pdf(pdf_file)
-        raw_content += f"\n\n{pdf_content}"
-    try:
-      for page in search( "website" + " of " + project_name, num =1, start=0, stop=1):
+        raw_content += f"\n\n{pdf_content}" + "\n   </projection-information>"
+    if raw_content:
+      try:
+        for page in search( "website" + " of " + project_name, num =1, start=0, stop=1):
+            website = page
+            break
+        for page in search( "twitter" + " of " + project_name, num =1, start=0, stop=1):
+            twitter = page
+            break
+        community = f"""[Website]({website})
+        
+    [Twitter]({twitter})"""
+      except:
+        for page in search( "website" + " of " + project_name + " in web3", num_results =1):
           website = page
           break
-      for page in search( "twitter" + " of " + project_name, num =1, start=0, stop=1):
-          twitter = page
-          break
-      community = f"""[Website]({website})
+        for page in search( "twitter" + " of " + project_name + " in web3", num_results =1):
+            twitter = page
+            break
+        community = f"""[Website]({website})
       
   [Twitter]({twitter})"""
-    except:
-      for page in search( "website" + " of " + project_name + " in web3", num_results =1):
-        website = page
-        break
-      for page in search( "twitter" + " of " + project_name + " in web3", num_results =1):
-          twitter = page
-          break
-      community = f"""[Website]({website})
-    
-[Twitter]({twitter})"""
-    # Generate content using the model
-    blog = model_gemini.generate_content(prompt.format(content = raw_content))
-    
-    # Display the generated content in Markdown
-    with st.spinner("Generating content..."):
-      generated_content = blog.candidates[0].content.parts[0].text.strip()
-      a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
-      final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
-      print(final_blog)
-      st.markdown(final_blog)
+      # Generate content using the model
+      blog = model_gemini.generate_content(prompt.format(content = raw_content))
+      
+      # Display the generated content in Markdown
+      with st.spinner("Generating content..."):
+        generated_content = blog.candidates[0].content.parts[0].text.strip()
+        a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
+        final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
+        print(final_blog)
+        st.markdown(final_blog)
 
-    # Prepare Markdown for download
-    markdown_buffer = io.BytesIO()
-    markdown_buffer.write(final_blog.encode())
-    markdown_buffer.seek(0)
+      # Prepare Markdown for download
+      markdown_buffer = io.BytesIO()
+      markdown_buffer.write(final_blog.encode())
+      markdown_buffer.seek(0)
 
-    # Button to download Markdown
-    st.download_button("Tải xuống", markdown_buffer, file_name="generated_content.txt", mime="text/plain")
+      # Button to download Markdown
+      st.download_button("Tải xuống", markdown_buffer, file_name="generated_content.txt", mime="text/plain")
+    else:
+          st.error("Vui lòng nhập thông tin dự án!")
