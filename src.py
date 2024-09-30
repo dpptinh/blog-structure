@@ -3,6 +3,9 @@ import trafilatura
 import google.generativeai as genai
 import io
 import ast
+import fitz  # PyMuPDF
+
+
 import trafilatura
 from dotenv import load_dotenv
 
@@ -125,14 +128,25 @@ def get_context(links: list) -> str:
     full_context += "\n     </blog-collection>"
     return full_context
 
+def extract_text_from_pdf(pdf_file) -> str:
+    text = ""
+    with fitz.open(pdf_file) as doc:
+        for page in doc:
+            text += page.get_text()
+    return text
 
 # Streamlit UI
 st.title("Crawl và Generate Content")
 links_input = st.text_area("Nhập các link (mỗi link trên một dòng, sử dụng nút enter để xuống dòng):")
 project_name = st.text_area("Nhập tên dự án:")
+pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploader cho file PDF
+
 if st.button("Generate"):
     links = links_input.splitlines()
     raw_content = get_context(links)
+    if pdf_file:
+        pdf_content = extract_text_from_pdf(pdf_file)
+        raw_content += f"\n\n{pdf_content}"
     try:
       for page in search( "website" + " of " + project_name, num =1, start=0, stop=1):
           website = page
