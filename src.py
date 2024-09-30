@@ -12,14 +12,14 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 from googlesearch import search
-prompt = """<ROLE>You are an expert SEO blog post writer. You can extract, synthesize, and rewrite AI and SEO content in MARKDOWN format while strictly preserving key original elements.</ROLE>
+prompt = """<ROLE>You are an expert SEO blog post writer about projects in web3. You can extract, synthesize, and rewrite AI and SEO content in MARKDOWN format while strictly preserving key original elements.</ROLE>
 
 <INPUT>
-ORIGINAL BLOG: \n{content}
+ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
 <TASK>
-Rewrite, paraphrase the information from the provided blog post into a new, detailed blog post in Vietnamese.
+Rewrite, paraphrase the information from the provided information into a new, detailed blog post in Vietnamese.
 Your professionally rewritten content will enhance SEO while rigorously maintaining the integrity of original data, key phrases, and quoted content.
 </TASK>
 
@@ -53,6 +53,7 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
    - Ensure no content within quotation marks has been translated or altered.
    - Remove any content unrelated to the main topic, such as advertisements.
    - Review for overall coherence, SEO optimization, and strict adherence to content preservation rules.
+   - The blog must meet the requirements of a blog post about a project in web3 and SEO.
 </CONSTRAINTS>
 
 <blog-outline>
@@ -125,11 +126,11 @@ def get_context(links: list) -> str:
                 </content>
             </blog-post>"""
         count += 1
-    full_context += "\n     </blog-collection>"
+    full_context += "\n       </blog-collection>"
     return full_context
 
 def extract_text_from_pdf(pdf_file) -> str:
-   text = ""
+   text = "      <white-paper>: \n"
    # Đảm bảo rằng pdf_file là một đối tượng BytesIO
    pdf_file.seek(0)  # Đặt con trỏ về đầu file
    with fitz.open(stream=pdf_file.read(), filetype="pdf") as doc:
@@ -138,7 +139,7 @@ def extract_text_from_pdf(pdf_file) -> str:
          text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
          count += 1
    print("PDF CONTENT: \n", text)
-   return text
+   return text + "\n       </white-paper>"
 
 # Streamlit UI
 st.title("Crawl và Generate Content")
