@@ -190,10 +190,11 @@ if st.button("Generate"):
       
   [Twitter]({twitter})"""
       # Generate content using the model
-      blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
-      # blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
+      
       # Display the generated content in Markdown
       with st.spinner("Generating content..."):
+        blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
+      # blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
         a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
         # a = ast.literal_eval(blog.content.strip().strip("\n"))
         final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
