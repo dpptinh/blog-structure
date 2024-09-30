@@ -131,8 +131,10 @@ def get_context(links: list) -> str:
 def extract_text_from_pdf(pdf_file) -> str:
     text = ""
     with fitz.open(pdf_file) as doc:
+        count = 1
         for page in doc:
-            text += page.get_text()
+            text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
+            count += 1
     return text
 
 # Streamlit UI
