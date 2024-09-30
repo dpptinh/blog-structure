@@ -137,7 +137,7 @@ def extract_text_from_pdf(pdf_file) -> str:
      for page in doc:
          text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
          count += 1
-   print("PDF CONTENT: \n")
+   print("PDF CONTENT: \n", text)
    return text
 
 # Streamlit UI
