@@ -20,7 +20,7 @@ ORIGINAL INFORMATION: \n{content}
 </INPUT>
 
 <TASK>
-Extract, Rewrite, paraphrase the information from the provided information into a LONG, DETAILED and COMPREHENSIVE blog post in Vietnamese.
+Rewrite, paraphrase the information from the provided information into a COMPREHENSIVE blog post in Vietnamese.
 Your professionally rewritten content will enhance SEO while rigorously maintaining the integrity of original data, key phrases, and quoted content.
 </TASK>
 
@@ -45,7 +45,7 @@ Your professionally rewritten content will enhance SEO while rigorously maintain
 3. **Structure and Length:** (Importance: Critical)
    - The first section of the blog must be titled "Tổng quan."
    - The content of "Tổng quan" section and "Kết luận" section should be consice texts while the remaining sections (Mô hình kinh doanh, Đội ngũ dự án, Định hướng phát triển, Đối thủ cạnh tranh, Thực tế đạt được/Tình hình hoạt động, Tokenomic, Mua token ở đâu?) should be long, detailed and comprehensive.
-   - The content of each header and section should contain multiple short paragraphs.
+   - The content of each header and section should include multiple short paragraphs.
    - The length of the blog content should be comprehensive and detailed, reflecting the content related to the chapter titles in the original blog. However, it should not exceed 8100 tokens/words.
 
 4. **Final Review:** (Importance: High)
@@ -104,7 +104,7 @@ genai.configure(api_key=st.secrets['GENAI_API_KEY'])
 # Create the model
 # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
-  "temperature": 0.21,
+  "temperature": 0.1,
   "top_p": 1.0,
   "top_k": 120,
   "max_output_tokens": 8192,
@@ -193,10 +193,10 @@ if st.button("Generate"):
       
       # Display the generated content in Markdown
       with st.spinner("Generating content..."):
-        # blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
-        blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
-        # a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
-        a = ast.literal_eval(blog.content.strip().strip("\n"))
+        blog = model_gemini.generate_content(prompt.format(content = raw_content, project_name = project_name))
+      # blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
+        a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
+        # a = ast.literal_eval(blog.content.strip().strip("\n"))
         final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
         print(final_blog)
         st.markdown(final_blog)
