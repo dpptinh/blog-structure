@@ -38,7 +38,7 @@ def get_tweets(link_twitter: str, last_timestamp: int) -> str:
     
 def get_tweet_content(tweet, index) -> str:
     context = f"""<tweet id="{index}">
-    <date>{tweet['last_updated']}</date>
+    <date>{tweet['post_created']}</date>
     <content>\n{tweet['post_title']}\n</content>
 </tweet>
 """
