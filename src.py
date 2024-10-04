@@ -12,35 +12,23 @@ from model import model_gemini, model_gpt_4o_mini
 from prompts import summary_prompt, information_extraction_prompt
 # Streamlit UI
 st.title("Crawl và Generate Content")
-links_input = st.text_area("Nhập các link (mỗi link trên một dòng, sử dụng nút enter để xuống dòng):")
-project_name = st.text_input("Nhập tên dự án:")
 twitter_link = st.text_input("Nhập link Twitter:")
-year, month, day = str(st.date_input("Chọn ngày tháng năm:")).split("-")
-pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploader cho file PDF
+year, month, day = str(st.date_input("Chọn thời gian bắt đầu lấy các tweets cho đến này (ngày tháng năm:")).split("-")
 model_choice = st.selectbox("Chọn mô hình:", ["gpt_4o_mini", "gemini"], index=0)  # Thêm lựa chọn mô hình, mặc định là gpt_4o_mini
 
 if st.button("Generate"):
     timestamp =  convert_time_to_timestamp(day, month, year)
     print(timestamp)
     tweets = get_tweets(twitter_link, timestamp)
-    links_input = links_input.strip().strip("\n")
-    links = links_input.splitlines()
-    
-    raw_content = "\n   <projection-information>"
-    if links:
-        blog_content = get_context_from_website(links)
-        raw_content += f"\n{blog_content}"
-    if pdf_file:
-        pdf_content = get_text_from_pdf(pdf_file)
-        raw_content += f"\n\n{pdf_content}"
+    raw_content = "<information>"
     if twitter_link:
       count = 1
       for tweet in tweets:
         tweet_content = get_tweet_content(tweet, count)
         raw_content += f"\n\n{tweet_content}" 
-    raw_content += "\n </projection-information>"
+    raw_content += "\n </information>"
     
-    if links or pdf_file or twitter_link:
+    if  twitter_link:
       with st.spinner("Generating content..."):
         print(twitter_link)
         if model_choice == "gemini":
