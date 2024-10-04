@@ -32,9 +32,9 @@ if st.button("Generate"):
       with st.spinner("Generating content..."):
         print(twitter_link)
         if model_choice == "gemini":
-          summary = model_gemini.generate_content(summary_prompt.format(content = raw_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
+          summary = model_gemini.generate_content(summary_prompt.format(content = raw_content)).candidates[0].content.parts[0].text.strip().strip("\n")
         else:
-          summary = model_gpt_4o_mini.invoke(summary_prompt.format(content = raw_content, project_name = project_name)).content
+          summary = model_gpt_4o_mini.invoke(summary_prompt.format(content = raw_content)).content
         # print(summary)
         st.markdown("\n\n # SUMMARY ")
         st.markdown(summary)
@@ -44,9 +44,9 @@ if st.button("Generate"):
         for tweet in tweets:
             tweet_content = get_tweet_content(tweet, count) 
             if model_choice == "gemini":
-              information_extraction = model_gemini.generate_content(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
+              information_extraction = model_gemini.generate_content(information_extraction_prompt.format(content = tweet_content)).candidates[0].content.parts[0].text.strip().strip("\n")
             else:
-              information_extraction = model_gpt_4o_mini.invoke(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).content
+              information_extraction = model_gpt_4o_mini.invoke(information_extraction_prompt.format(content = tweet_content)).content
             # print(information_extraction)
             try:
               extraction_dict = ast.literal_eval(information_extraction)
