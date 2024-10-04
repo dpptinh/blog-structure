@@ -66,7 +66,7 @@ if st.button("Generate"):
               st.error(f"Error parsing extraction for tweet on {tweet['last_updated']}: {e}")
               continue
                 
-            st.markdown(f"## TWEET on {tweet['last_updated']} ")
+            st.markdown(f"## TWEET on {tweet['post_created']} ")
             if isinstance(extraction_dict, dict):
                   # Tạo tiêu đề bảng từ các khóa của dictionary
               headers = "| " + " | ".join(extraction_dict.keys()) + " |"
