@@ -9,7 +9,7 @@ import fitz  # PyMuPDF
 import trafilatura
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Tải các biến môi trường từ file .env
 load_dotenv()
 from googlesearch import search
 prompt = """<ROLE>You are an expert SEO blog post writer about projects in web3. You can extract, synthesize, and rewrite AI and SEO content in MARKDOWN format while strictly preserving key original elements.</ROLE>
