@@ -13,7 +13,7 @@ from prompts import summary_prompt, information_extraction_prompt
 # Streamlit UI
 st.title("Crawl và Generate Content")
 twitter_link = st.text_input("Nhập link Twitter:")
-year, month, day = str(st.date_input("Chọn thời gian bắt đầu lấy các tweets cho đến này (ngày tháng năm:")).split("-")
+year, month, day = str(st.date_input("Chọn thời gian bắt đầu lấy các tweets cho đến nay (ngày tháng năm):")).split("-")
 model_choice = st.selectbox("Chọn mô hình:", ["gpt_4o_mini", "gemini"], index=0)  # Thêm lựa chọn mô hình, mặc định là gpt_4o_mini
 
 if st.button("Generate"):
