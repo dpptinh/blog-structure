@@ -32,7 +32,7 @@ def get_context_from_website(links: list) -> str:
 
 def get_tweets(link_twitter: str, last_timestamp: int) -> str:
     print(twitter_api.format(link_twitter.split("/")[-1], last_timestamp))
-    tweets = requests.get(twitter_api.format(link_twitter.split("/")[-1], last_timestamp))
+    tweets = requests.get(f"{twitter_api}/twitter/posts?name={link_twitter.split('/')[-1]}&last={last_timestamp}")
     print(tweets)
     return tweets.json()
     
