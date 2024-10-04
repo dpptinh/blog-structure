@@ -17,6 +17,7 @@ project_name = st.text_input("Nhập tên dự án:")
 twitter_link = st.text_input("Nhập link Twitter:")
 year, month, day = str(st.date_input("Chọn ngày tháng năm:")).split("-")
 pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploader cho file PDF
+model_choice = st.selectbox("Chọn mô hình:", ["gpt_4o_mini", "gemini"], index=0)  # Thêm lựa chọn mô hình, mặc định là gpt_4o_mini
 
 if st.button("Generate"):
     timestamp =  convert_time_to_timestamp(day, month, year)
@@ -42,19 +43,22 @@ if st.button("Generate"):
     if links or pdf_file or twitter_link:
       with st.spinner("Generating content..."):
         print(twitter_link)
-        # summary = model_gemini.generate_content(summary_prompt.format(content = raw_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
-        summary = model_gpt_4o_mini.invoke(summary_prompt.format(content = raw_content, project_name = project_name))
+        if model_choice == "gemini":
+          summary = model_gemini.generate_content(summary_prompt.format(content = raw_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
+        else:
+          summary = model_gpt_4o_mini.invoke(summary_prompt.format(content = raw_content, project_name = project_name)).content
         # print(summary)
         st.markdown("\n\n # SUMMARY ")
-        st.markdown(summary.content)
+        st.markdown(summary)
         
         st.markdown("\n\n # INFORMATION EXTRACTION")
         extraction_tables = []
         for tweet in tweets:
-            tweet_content = get_tweet_content(tweet, count)
-            # information_extraction = model_gemini.generate_content(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
-            # print(information_extraction)
-            information_extraction = model_gpt_4o_mini.invoke(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).content
+            tweet_content = get_tweet_content(tweet, count) 
+            if model_choice == "gemini":
+              information_extraction = model_gemini.generate_content(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).candidates[0].content.parts[0].text.strip().strip("\n")
+            else:
+              information_extraction = model_gpt_4o_mini.invoke(information_extraction_prompt.format(content = tweet_content, project_name = project_name)).content
             # print(information_extraction)
             try:
               extraction_dict = ast.literal_eval(information_extraction)
@@ -77,7 +81,7 @@ if st.button("Generate"):
 
       # Prepare Markdown for download
       markdown_buffer = io.BytesIO()
-      markdown_buffer.write(summary.content.encode())
+      markdown_buffer.write(summary.encode())
       markdown_buffer.seek(0)
       
       extractions_content = "\n\n".join(extraction_tables)
