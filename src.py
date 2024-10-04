@@ -63,7 +63,7 @@ if st.button("Generate"):
             try:
               extraction_dict = ast.literal_eval(information_extraction)
             except Exception as e:
-              st.error(f"Error parsing extraction for tweet on {tweet['last_updated']}: {e}")
+              st.error(f"Error parsing extraction for tweet on {tweet['post_created']}: {e}")
               continue
                 
             st.markdown(f"## TWEET on {tweet['post_created']} ")

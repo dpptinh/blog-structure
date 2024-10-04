@@ -8,7 +8,7 @@ genai.configure(api_key=st.secrets['GENAI_API_KEY'])
 # Create the model
 # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
-  "temperature": 0.1,
+  "temperature": 0.3,
   "top_p": 1.0,
   "top_k": 100,
   "max_output_tokens": 8192,
@@ -25,9 +25,8 @@ model_gpt_4o_mini = AzureChatOpenAI(
           openai_api_version=st.secrets['OPENAI_API_VERSION'],
           azure_deployment='gpt4o-mini',
           max_tokens=4096,
-          temperature=0.2,
+          temperature=0.3,
           api_key=st.secrets['AZURE_OPENAI_API_KEY'],
           azure_endpoint=st.secrets['AZURE_OPENAI_ENDPOINT']
       )
-
 
