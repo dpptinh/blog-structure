@@ -4,7 +4,7 @@ from langchain_openai import AzureChatOpenAI, AzureOpenAI
 import os
 from dotenv import load_dotenv
 load_dotenv()
-genai.configure(api_key=st.secrets['GENAI_API_KEY']) 
+genai.configure(api_key=os.getenv('GENAI_API_KEY')) 
 # Create the model
 # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
 generation_config = {
@@ -22,11 +22,11 @@ model_gemini = genai.GenerativeModel(
   # See https://ai.google.dev/gemini-api/docs/safety-settings)
 model_gpt_4o_mini = AzureChatOpenAI(
           model="gpt-4o-mini",
-          openai_api_version=st.secrets['OPENAI_API_VERSION'],
+          openai_api_version=os.getenv('OPENAI_API_VERSION'),
           azure_deployment='gpt4o-mini',
-          max_tokens=4096,
+          max_tokens=16300,
           temperature=0.3,
-          api_key=st.secrets['AZURE_OPENAI_API_KEY'],
-          azure_endpoint=st.secrets['AZURE_OPENAI_ENDPOINT']
+          api_key=os.getenv('AZURE_OPENAI_API_KEY'),
+          azure_endpoint=os.getenv('AZURE_OPENAI_ENDPOINT')
       )
 

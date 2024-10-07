@@ -7,7 +7,7 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 load_dotenv()
-twitter_api = st.secrets['TWITTER_API']
+twitter_api = os.getenv('TWITTER_API')
 def convert_time_to_timestamp(day, month, year):
     # Tạo đối tượng datetime từ ngày, tháng, năm
     time_obj = datetime(int(year), int(month), int(day))
