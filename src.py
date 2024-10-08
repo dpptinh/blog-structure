@@ -129,17 +129,20 @@ model_gemini = genai.GenerativeModel(
 def get_context(links: list) -> str:
     full_context = '      <blog-collection>'
     count = 1
+   valid_links = []
     for link in links:
         html =  trafilatura.fetch_url(link)
         context =  trafilatura.extract(html, output_format = "markdown", include_formatting= True, include_tables= True, include_images=True, include_links=True)
-        full_context += f"""\n        <blog-post-{count}>
-                <content>
-                {context}
-                </content>
-            </blog-post>"""
-        count += 1
+        if len(str(context)) > 5:
+           full_context += f"""\n        <blog-post-{count}>
+                   <content>
+                   {context}
+                   </content>
+               </blog-post>"""
+           count += 1
+           valid_links.append(link)
     full_context += "\n       </blog-collection>"
-    return full_context
+    return full_context, valid_links
 
 def extract_text_from_pdf(pdf_file) -> str:
    text = "      <white-paper>: \n"
@@ -150,8 +153,9 @@ def extract_text_from_pdf(pdf_file) -> str:
      for page in doc:
          text += f"\n\n============================== PAGE {count}: =============================\n" + page.get_text()
          count += 1
-   print("PDF CONTENT: \n", text)
-   return text + "\n       </white-paper>"
+   # print("PDF CONTENT: \n", text)
+   iscrawl = True if len(str(text)) >  10 else False
+   return text + "\n       </white-paper>", isCrawl
 
 # Streamlit UI
 st.title("Crawl và Generate Content")
@@ -160,13 +164,14 @@ project_name = st.text_area("Nhập tên dự án:")
 pdf_file = st.file_uploader("Tải lên file PDF:", type=["pdf"])  # Thêm uploader cho file PDF
 
 if st.button("Generate"):
+    isCrawl = False
     links = links_input.splitlines()
     raw_content = "\n   <projection-information>"
     if links:
-        blog_content = get_context(links)
+        blog_content, valid_links = get_context(links)
         raw_content += f"\n{blog_content}"
     if pdf_file:
-        pdf_content = extract_text_from_pdf(pdf_file)
+        pdf_content, isCrawl = extract_text_from_pdf(pdf_file)
         raw_content += f"\n\n{pdf_content}" + "\n   </projection-information>"
     if raw_content:
       try:
@@ -197,8 +202,8 @@ if st.button("Generate"):
       # blog = model_gpt_4o_mini.invoke(prompt.format(content = raw_content, project_name = project_name))
         a = ast.literal_eval(blog.candidates[0].content.parts[0].text.strip().strip("\n"))
         # a = ast.literal_eval(blog.content.strip().strip("\n"))
-        final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}"
-        print(final_blog)
+        final_blog = f"# {a['title']} \n {a['content']} \n\n## Cộng đồng: \n\n{community}\n\n===========================\n Bài viết được viết từ các nguồn sau: \n URLS: {valid_links} \n Nguồn từ PDF: {isCrawl}"
+        # print(final_blog)
         st.markdown(final_blog)
 
       # Prepare Markdown for download
