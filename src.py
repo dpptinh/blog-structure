@@ -129,7 +129,7 @@ model_gemini = genai.GenerativeModel(
 def get_context(links: list) -> str:
     full_context = '      <blog-collection>'
     count = 1
-   valid_links = []
+    valid_links = []
     for link in links:
         html =  trafilatura.fetch_url(link)
         context =  trafilatura.extract(html, output_format = "markdown", include_formatting= True, include_tables= True, include_images=True, include_links=True)
